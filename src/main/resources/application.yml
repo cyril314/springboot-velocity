@@ -1,0 +1,36 @@
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 30m #用户回话session过期时间，以秒为单位
+    context-path: / #配置访问路径，默认为'/'
+  error:
+    path: /error #错误文件路径
+
+# spring配置
+spring:
+  #数据库
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useOldAliasMetadataBehavior=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: root
+  #view设置
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+  velocity:
+    suffix: .html
+    prefix: /
+    cache: true
+    content-type: text/html;charset=UTF-8
+    date-tool-attribute: dateTool
+    number-tool-attribute: numberTool
+    toolbox-config-location: toolbox.xml
+    resource-loader-path: classpath:/templates/
+
+# mybatis配置
+mybatis:
+  mapper-locations: classpath*:com/**/mapper/*.xml
+  type-aliases-package: com.aim.dao
