@@ -1,4 +1,4 @@
-package com.aim.controller.front;
+package com.fit.controller.front;
 
 import com.common.base.PatternAndView;
 import io.swagger.annotations.ApiOperation;

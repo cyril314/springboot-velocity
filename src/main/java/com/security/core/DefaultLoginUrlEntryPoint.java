@@ -33,11 +33,10 @@ public class DefaultLoginUrlEntryPoint extends LoginUrlAuthenticationEntryPoint 
     //当访问的资源没有权限，会调用这里
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        // 判断是不是ajax请求
-        boolean isAjax = RequestUtil.isAjax(request);
         //表示当前用户是否已经登录认证成功了
         boolean hasSession = SecurityHelper.isAuthenticated();
-        if (isAjax && !hasSession) {
+        // 判断是不是ajax请求
+        if (RequestUtil.isAjax(request) && !hasSession) {
             this.transformAjaxRequest(request, response);
         } else {
             String targetUrl = this.defaultIndexUrl;
@@ -48,7 +47,7 @@ public class DefaultLoginUrlEntryPoint extends LoginUrlAuthenticationEntryPoint 
             }
 
             targetUrl = request.getContextPath() + targetUrl;
-            logger.info("=======================================================================> 当前的访问路径：" + targetUrl);
+            logger.info("====> 当前的访问路径：" + targetUrl);
             response.sendRedirect(targetUrl);
         }
     }

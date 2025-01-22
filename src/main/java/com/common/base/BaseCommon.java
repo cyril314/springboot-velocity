@@ -1,5 +1,6 @@
 package com.common.base;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +19,8 @@ import java.util.*;
  * @Author AIM
  * @DATE 2018/5/21
  */
+@Slf4j
 public class BaseCommon {
-
-    private static Logger logger = LoggerFactory.getLogger(BaseCommon.class);
 
     /**
      * 判断对象是不是不为空
@@ -33,47 +33,38 @@ public class BaseCommon {
      * 判断对象是不是空
      */
     public static boolean isEmpty(Object obj) {
-        if (obj == null)
-            return true;
+        if (obj == null) return true;
         if (obj instanceof String) {
-            if (!"".equals(obj))
-                return false;
+            if (!"".equals(obj)) return false;
         } else if (obj instanceof StringBuffer) {
             return isEmpty(obj.toString());
         } else if (obj instanceof Map) {
-            if (!isEmpty(((Map<?, ?>) obj).values()))
-                return false;
+            if (!isEmpty(((Map<?, ?>) obj).values())) return false;
         } else if (obj instanceof Enumeration) {
             Enumeration<?> enumeration = (Enumeration<?>) obj;
             while (enumeration.hasMoreElements()) {
-                if (!isEmpty(enumeration.nextElement()))
-                    return false;
+                if (!isEmpty(enumeration.nextElement())) return false;
             }
         } else if (obj instanceof Iterable) {
             if (obj instanceof List && obj instanceof RandomAccess) {
                 List<?> objList = (List<?>) obj;
                 for (int i = 0; i < objList.size(); i++) {
-                    if (!isEmpty(objList.get(i)))
-                        return false;
+                    if (!isEmpty(objList.get(i))) return false;
                 }
-            } else if (!isEmpty(((Iterable<?>) obj).iterator()))
-                return false;
+            } else if (!isEmpty(((Iterable<?>) obj).iterator())) return false;
         } else if (obj instanceof Iterator) {
             Iterator<?> it = (Iterator<?>) obj;
             while (it.hasNext()) {
-                if (!isEmpty(it.next()))
-                    return false;
+                if (!isEmpty(it.next())) return false;
             }
         } else if (obj instanceof Object[]) {
             Object[] objs = (Object[]) obj;
             for (Object elem : objs) {
-                if (!isEmpty(elem))
-                    return false;
+                if (!isEmpty(elem)) return false;
             }
         } else if (obj instanceof int[]) {
             for (Object elem : (int[]) obj) {
-                if (!isEmpty(elem))
-                    return false;
+                if (!isEmpty(elem)) return false;
             }
         } else {
             return false;
@@ -92,17 +83,13 @@ public class BaseCommon {
      * 判断对象或对象数组中每一个对象是否为空: 对象为null，字符序列长度为0，集合类、Map为empty
      */
     public static boolean isNullOrEmpty(Object obj) {
-        if (obj == null || "".equals(obj))
-            return true;
+        if (obj == null || "".equals(obj)) return true;
 
-        if (obj instanceof CharSequence)
-            return ((CharSequence) obj).length() == 0;
+        if (obj instanceof CharSequence) return ((CharSequence) obj).length() == 0;
 
-        if (obj instanceof Collection)
-            return ((Collection<?>) obj).isEmpty();
+        if (obj instanceof Collection) return ((Collection<?>) obj).isEmpty();
 
-        if (obj instanceof Map)
-            return ((Map<?, ?>) obj).isEmpty();
+        if (obj instanceof Map) return ((Map<?, ?>) obj).isEmpty();
 
         if (obj instanceof Object[]) {
             Object[] object = (Object[]) obj;
@@ -235,7 +222,7 @@ public class BaseCommon {
                 }
             }
         } catch (Exception e) {
-            logger.error("map转{}异常", clz.getName(), e);
+            log.error("map转{}异常", clz.getName(), e);
         }
         return obj;
     }

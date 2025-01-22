@@ -1,4 +1,4 @@
-package com.aim.config;
+package com.fit.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

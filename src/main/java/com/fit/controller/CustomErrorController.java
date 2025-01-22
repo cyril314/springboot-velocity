@@ -1,4 +1,4 @@
-package com.aim.controller;
+package com.fit.controller;
 
 import com.common.base.BaseController;
 import com.common.base.PatternAndView;

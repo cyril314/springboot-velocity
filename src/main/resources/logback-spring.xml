@@ -19,7 +19,7 @@
             <appender-ref ref="STDOUT"/>
         </root>
         <!--各个服务的包在本地执行的时候，打开debug模式-->
-        <logger name="com.aim" level="debug" additivity="false">
+        <logger name="com.fit" level="debug" additivity="false">
             <appender-ref ref="STDOUT"/>
         </logger>
         <logger name="org.springframework.jdbc.core" additivity="false" level="DEBUG">

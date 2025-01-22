@@ -24,7 +24,9 @@ public class CustomPluginAdapter extends PluginAdapter {
     public static SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 
     public static void main(String[] args) {
-        generate();
+        String config = CustomPluginAdapter.class.getClassLoader().getResource("generatorConfig.xml").getFile();
+        String[] arg = {"-configfile", config, "-overwrite"};
+        ShellRunner.main(arg);
     }
 
     /**
@@ -319,11 +321,5 @@ public class CustomPluginAdapter extends PluginAdapter {
 
     public boolean validate(List<String> arg0) {
         return true;
-    }
-
-    public static void generate() {
-        String config = CustomPluginAdapter.class.getClassLoader().getResource("generatorConfig.xml").getFile();
-        String[] arg = {"-configfile", config, "-overwrite"};
-        ShellRunner.main(arg);
     }
 }

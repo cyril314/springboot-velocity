@@ -1,6 +1,6 @@
 package com.security.entity;
 
-import com.aim.model.SysUser;
+import com.fit.model.SysUser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,7 +1,7 @@
 package com.security.service;
 
-import com.aim.model.SysUser;
-import com.aim.service.SysUserService;
+import com.fit.model.SysUser;
+import com.fit.service.SysUserService;
 import com.security.entity.UserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.aim.model;
+package com.fit.model;
 
 import com.common.base.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;

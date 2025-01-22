@@ -1,4 +1,4 @@
-package com.aim.config;
+package com.fit.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

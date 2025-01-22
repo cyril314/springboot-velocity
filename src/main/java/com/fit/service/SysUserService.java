@@ -1,7 +1,7 @@
-package com.aim.service;
+package com.fit.service;
 
-import com.aim.dao.SysUserDao;
-import com.aim.model.SysUser;
+import com.fit.dao.SysUserDao;
+import com.fit.model.SysUser;
 import com.common.base.BaseCrudService;
 import org.springframework.stereotype.Service;
 

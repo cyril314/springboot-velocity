@@ -1,6 +1,6 @@
-package com.aim.dao;
+package com.fit.dao;
 
-import com.aim.model.SysUser;
+import com.fit.model.SysUser;
 import com.common.base.BaseCrudDao;
 import org.apache.ibatis.annotations.Mapper;
 

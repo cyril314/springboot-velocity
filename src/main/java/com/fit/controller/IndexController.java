@@ -1,4 +1,4 @@
-package com.aim.controller.admin;
+package com.fit.controller;
 
 import com.common.base.PatternAndView;
 import org.slf4j.Logger;
@@ -14,33 +14,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @AUTO 后台页面控制器
+ * @AUTO
  * @Author AIM
  * @DATE 2018/10/22
  */
 @Controller
-public class AdminController {
+public class IndexController {
 
-    private final Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-    @RequestMapping(value = {"/admin", "/admin/", "/admin/index"})
-    public String admin() {
-        return "admin/index";
+    @RequestMapping(value = {"/", "/index"})
+    public String index() {
+        logger.info("访问首页");
+        return "index";
     }
 
     /**
      * @return 返回登陆页
      */
-    @RequestMapping(value = {"/admin/login", "/admin/login.html"})
+    @RequestMapping(value = {"/login", "/login.html"})
     public ModelAndView login() {
-        logger.info("后台登陆页面");
-        return new PatternAndView("/admin/login");
+        return new PatternAndView("/front/login");
     }
 
     /**
      * @return 退出, 跳转到登陆页面
      */
-    @RequestMapping("/admin/logout")
+    @RequestMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {

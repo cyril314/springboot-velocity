@@ -1,7 +1,6 @@
 package com.security.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.security.access.ConfigAttribute;
@@ -25,42 +24,28 @@ import java.util.*;
  * @Author AIM
  * @DATE 2018/7/18
  */
+@Slf4j
 @Component
 public class DefaultSecurityMetadataSource extends JdbcDaoSupport implements FilterInvocationSecurityMetadataSource {
 
-    private final Logger logger = LoggerFactory.getLogger(DefaultSecurityMetadataSource.class);
-
     private static Map<String, Collection<ConfigAttribute>> requestMap = null;
+    private String sql = "SELECT b.url FROM  `sys_authorities_res` a, `sys_resources` b, `sys_authorities` c WHERE a.res_id = b.id AND a.auth_id = c.id AND c.name = ?";
 
     //tomcat启动时实例化一次
     public DefaultSecurityMetadataSource(DataSource dataSource) {
-        logger.info("=> 启动第一步, 初始化，读取数据库所有的url、角色");
         this.setDataSource(dataSource);
-        loadResourceDefine();
-    }
-
-    //tomcat开启时加载一次，加载所有url和权限（或角色）的对应关系
-    private void loadResourceDefine() {
+        // 应当是资源为key， 权限为value。 资源通常为url， 权限就是那些以ROLE_为前缀的角色。 一个资源可以由多个权限来访问。
+        requestMap = new HashMap<String, Collection<ConfigAttribute>>();
         // 在Web服务器启动时，提取系统中的所有权限。
         List<String> query = getJdbcTemplate().query("select sas.name from sys_authorities sas", new RowMapper<String>() {
             public String mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return rs.getString(1);
             }
         });
-        // 应当是资源为key， 权限为value。 资源通常为url， 权限就是那些以ROLE_为前缀的角色。 一个资源可以由多个权限来访问。
-        requestMap = new HashMap<String, Collection<ConfigAttribute>>();
-
         if (query != null) {
             for (String auth : query) {
                 ConfigAttribute ca = new SecurityConfig(auth);
-
-                List<String> list = getJdbcTemplate().query("SELECT b.url FROM  `sys_authorities_res` a, `sys_resources` b, `sys_authorities` c "
-                        + "WHERE a.res_id = b.id AND a.auth_id = c.id AND c.name = '" + auth + "'", new RowMapper<String>() {
-                    public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return rs.getString(1);
-                    }
-                });
-
+                List<String> list = getJdbcTemplate().queryForList(sql, String.class, auth);
                 for (String res : list) {
                     String url = res;
                     // 判断资源文件和权限的对应关系，如果已经存在相关的资源url，则要通过该url为key提取出权限集合，将权限增加到权限集合中。
@@ -75,7 +60,7 @@ public class DefaultSecurityMetadataSource extends JdbcDaoSupport implements Fil
                     }
                 }
             }
-            logger.info("=> 匹配请求路径集合：" + requestMap.toString());
+            log.info("==================> 第一步, 初始化，加载所有url和权限（或角色）的对应关系");
         }
     }
 
@@ -95,8 +80,7 @@ public class DefaultSecurityMetadataSource extends JdbcDaoSupport implements Fil
             RequestMatcher requestMatcher = new AntPathRequestMatcher(requestURL);
             if (requestMatcher.matches(filterInvocation.getHttpRequest())) {
                 Collection<ConfigAttribute> retCollection = requestMap.get(requestURL);
-                logger.info("===================> 根据URL，找到相关的权限配置");
-                logger.info("===================> 匹配成功返回集合：" + retCollection);
+                log.info("====================> 根据URL，找到相关的权限配置");
                 return retCollection;
             }
         }
@@ -106,18 +90,17 @@ public class DefaultSecurityMetadataSource extends JdbcDaoSupport implements Fil
 
     @Override
     public boolean supports(Class<?> clazz) {
-        logger.info("=> 第二步, 判定此 Class 对象所表示的类或接口与指定的 Class 参数所表示的类或接口是否相同,或是否是其超类或超接口");
+        log.info("================> 第二步, 判定此 Class 对象所表示的类或接口与指定的 Class 参数所表示的类或接口是否相同,或是否是其超类或超接口");
         return FilterInvocation.class.isAssignableFrom(clazz);
     }
 
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
-        logger.info("=> 第三步, 获取可以访问的权限信息");
         Set<ConfigAttribute> attributes = new HashSet<ConfigAttribute>();
         for (Map.Entry<String, Collection<ConfigAttribute>> entry : requestMap.entrySet()) {
             attributes.addAll(entry.getValue());
         }
-        logger.info("=> 总共有这些权限：" + attributes.toString());
+        log.info("=> 第三步, 获取可以访问的权限信息, 总共有这些权限：{}", attributes.toString());
         return attributes;
     }
 

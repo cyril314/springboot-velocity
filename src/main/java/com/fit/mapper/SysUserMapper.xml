@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.aim.dao.SysUserDao" >
-  <resultMap id="BaseResultMap" type="com.aim.model.SysUser" >
+<mapper namespace="com.fit.dao.SysUserDao" >
+  <resultMap id="BaseResultMap" type="com.fit.model.SysUser" >
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -25,7 +25,7 @@
     delete from sys_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="save" parameterType="com.aim.model.SysUser" >
+  <insert id="save" parameterType="com.fit.model.SysUser" >
     insert into sys_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -86,7 +86,7 @@
       </if>
     </trim>
   </insert>
-  <update id="update" parameterType="com.aim.model.SysUser" >
+  <update id="update" parameterType="com.fit.model.SysUser" >
     update sys_user
     <set>
       <if test="ctime != null">
@@ -147,7 +147,7 @@
       </if>
     </where>
   </sql>
-  <select id="findList" resultMap="BaseResultMap" parameterType="com.aim.model.SysUser" >
+  <select id="findList" resultMap="BaseResultMap" parameterType="com.fit.model.SysUser" >
     select
     <include refid="Base_Column_List" />
     from sys_user

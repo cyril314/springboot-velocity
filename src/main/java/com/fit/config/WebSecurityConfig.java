@@ -1,4 +1,4 @@
-package com.aim.config;
+package com.fit.config;
 
 import com.security.core.*;
 import com.security.service.DefaultFilterSecurityInterceptor;
